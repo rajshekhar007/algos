@@ -101,8 +101,8 @@ public class Sort {
     public static void main(String[] args) {
         int[] A = {8, 3, 4, 9, 7, 5, 6, 2};
         //insertionSort(A);
-        MSort(A, 0, A.length - 1);
-        //QSort(A, 0, A.length - 1);
+        //MSort(A, 0, A.length-1);
+        QSort(A, 0, A.length - 1);
         for (int i : A)
             System.out.print(i + " ");
     }
