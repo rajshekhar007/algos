@@ -1,0 +1,163 @@
+---------- TOPIC 1:-----------
+
+When dynamically loading a class, when is it appropriate to use:
+
+Class.forName("SomeClass");
+and when should I use
+
+ClassLoader.getSystemClassLoader().loadClass("SomeClass");
+Or, are they two ways of doing the same thing?
+
+They are quite different!
+
+As stated in the documentation for Class.forName(String),
+
+Returns the Class object associated with the class or interface with the given string name. Invoking this method is
+equivalent to:
+Class.forName(className, true, currentLoader)    ....(true here refers to do you want to initialize the class?)
+
+On the other hand, ClassLoader.loadClass(String):
+
+Invoking this method is equivalent to invoking loadClass(name, false).
+(here, the boolean has nothing to do with initialization; but if you check loadClass(String, boolean) documentation,
+you will see that all it does is load the class, not initialize it).
+
+The first one (Class.forName("SomeClass");) will:
+use the class loader that loaded the class which calls this code
+initialize the class (that is, all static initializers will be run)
+The other (ClassLoader.getSystemClassLoader().loadClass("SomeClass");) will:
+use the system class loader
+not initialize the class (say, if you use it to load a JDBC driver, it won't get registered, and you won't be able to use JDBC!)
+
+- Suppose you are coding a web application that will be execute on a container such as Tomcat. What Tomcat does is
+create a class loader for each web application (so that it can unload the webapps later and release memory -- you need
+a dedicated class loader for this to work!). In this situation, you can see that both calls will yield quite different
+results!
+
+For more detailed (and authoritative) information on class loading and initialization, check sections 12.2 and 12.4 of
+the latest (3rd) edition of the JVM Spec.
+
+
+--------------- TOPIC 2 -------------------
+
+In computer science and computer programming, a type system is said to feature strong typing when it specifies one or more restrictions on how operations involving values of different data types can be intermixed.
+
+Make sure you don't get static vs. dynamic typing confused with strong vs. weak typing.
+
+Static typing: Each variable, method parameter, return type etc. has a type known at compile time, either declared or inferred.
+Dynamic typing: types are ignored/don't exist at compile time
+Strong typing: each object at runtime has a specific type, and you can only perform those operations on it that are defined for that type.
+Weak typing: runtime objects either don't have an explicit type, or the system attempts to automatically convert types wherever necessary.
+These two opposites can be combined freely:
+
+Java is statically and strongly typed
+C is statically and weakly typed (pointer arithmetics!)
+Ruby is dynamically and strongly typed
+JavaScript is dynamically and weakly typed
+Genrally, static typing means that a lot of errors are caught by the compiler which are runtime errors in a dynamically typed language - but it also means that you spend a lot of time worrying about types, in many cases unnecessarily (see interfaces vs. duck typing).
+
+Strong typing means that any conversion between types must be explicit, either through a cast or through the use of conversion methods (e.g. parsing a string into an integer). This means more typing work, but has the advantage of keeping you in control of things, whereas weak typing often results in confusion when the system does some obscure implicit conversion that leaves you with a completely wrong variable value that causes havoc ten method calls down the line.
+
+- Strong guarantees about the run-time behavior of a program before program execution, whether provided by static analysis, the execution semantics of the language or another mechanism.
+
+Weak Typing	Pseudocode
+a = 2
+b = "2"
+
+concatenate(a, b) # Returns "22"
+add(a, b)         # Returns 4
+a = 2
+b = "2"
+
+Strong Typing Pseudocode
+concatenate(a, b)     # Type Error
+add(a, b)             # Type Error
+concatenate(str(a), b) # Returns "22"
+add(a, int(b))         # Returns 4
+
+
+Statically VS Dynamically Typed languages:
+- Advocates of static typing argue that the advantages of static typing include earlier detection of programming mistakes (e.g. preventing adding an integer to a boolean), better documentation in the form of type signatures (e.g. incorporating number and types of arguments when resolving names), more opportunities for compiler optimizations (e.g. replacing virtual calls by direct calls when the exact type of the receiver is known statically), increased runtime efficiency (e.g. not all values need to carry a dynamic type), and a better design time developer experience (e.g. knowing the type of the receiver, the IDE can present a drop-down menu of all applicable members).
+- Advocates of dynamically typed languages argue that static typing is too rigid, and that the softness of dynamically languages makes them ideally suited for prototyping systems with changing or unknown requirements, or that interact with other systems that change unpredictably (data and application integration). Of course, dynamically typed languages are indispensable for dealing with truly dynamic program behavior such as method interception, dynamic loading, mobile code, runtime reflection, etc.
+
+
+------------ TOPIC 3 --------------
+
+Process vs Thread ?
+
+http://docs.oracle.com/javase/tutorial/essential/concurrency/procthread.html
+
+In the Java programming language, concurrent programming is mostly concerned with threads. A computer system normally has many active processes and threads. This is true even in systems that only have a single execution core, and thus only have one thread actually executing at any given moment. Processing time for a single core is shared among processes and threads through an OS feature called time slicing.
+It's becoming more and more common for computer systems to have multiple processors or processors with multiple execution cores. This greatly enhances a system's capacity for concurrent execution of processes and threads — but concurrency is possible even on simple systems, without multiple processors or execution cores.
+
+Processes :
+A process has a self-contained execution environment. A process generally has a complete, private set of basic run-time resources; in particular, each process has its own memory space.
+Processes are often seen as synonymous with programs or applications. However, what the user sees as a single application may in fact be a set of cooperating processes. To facilitate communication between processes, most operating systems support Inter Process Communication (IPC) resources, such as pipes and sockets. IPC is used not just for communication between processes on the same system, but processes on different systems.
+
+Threads :
+Threads are sometimes called lightweight processes. Both processes and threads provide an execution environment, but creating a new thread requires fewer resources than creating a new process.
+Threads exist within a process — every process has at least one. Threads share the process's resources, including memory and open files. This makes for efficient, but potentially problematic, communication.
+Multithreaded execution is an essential feature of the Java platform. Every application has at least one thread — or several, if you count "system" threads that do things like memory management and signal handling. But from the application programmer's point of view, you start with just one thread, called the main thread. This thread has the ability to create additional threads, as we'll demonstrate in the next section.
+
+
+--------------- TOPIC 4 ------------
+Volatile keyword?
+http://www.javamex.com/tutorials/synchronization_volatile.shtml
+
+What is the Java volatile keyword?
+
+Essentially, volatile is used to indicate that a variable's value will be modified by different threads.
+
+Declaring a volatile Java variable means:
+
+The value of this variable will never be cached thread-locally: all reads and writes will go straight to "main memory";
+Access to the variable acts as though it is enclosed in a synchronized block, synchronized on itself.
+We say "acts as though" in the second point, because to the programmer at least (and probably in most JVM implementations) there is no actual lock object involved. Here is how synchronized and volatile compare:
+
+Characteristic	Synchronized	Volatile
+Type of variable	Object	Object or primitive
+Null allowed?	No	Yes
+Can block?	Yes	No
+All cached variables synchronized on access?	Yes	From Java 5 onwards
+When synchronization happens	When you explicitly enter/exit a synchronized block	Whenever a volatile variable is accessed.
+Can be used to combined several operations into an atomic operation?	Yes	Pre-Java 5, no. Atomic get-set of volatiles possible in Java 5.
+Difference between synchronized and volatile
+
+
+In other words, the main differences between synchronized and volatile are:
+
+a primitive variable may be declared volatile (whereas you can't synchronize on a primitive with synchronized);
+an access to a volatile variable never has the potential to block: we're only ever doing a simple read or write, so unlike a synchronized block we will never hold on to any lock;
+because accessing a volatile variable never holds a lock, it is not suitable for cases where we want to read-update-write as an atomic operation (unless we're prepared to "miss an update");
+a volatile variable that is an object reference may be null (because you're effectively synchronizing on the reference, not the actual object).
+Attempting to synchronize on a null object will throw a NullPointerException.
+
+When to use volatile?
+
+On the previous pages, we've looked at the definition of volatile and seen some of the additional atomic access to volatile variables provided by Java 5. We've also seen that volatile variables share some features (in particular the memory synchronization behaviour) of synchronized access to an object. So when should you use volatile?
+
+First, the easy cases where you basically don't need volatile or any other synchronization mechanism:
+
+volatile is not necessary– or in fact possible– for fields that are immutable (declared final);
+volatile is not necessary for variables that are accessed by only one thread (though of course you have to make a correct decision that they are only accessed by one thread!);
+volatile is not suitable for complex operations where you need to prevent access to a variable for the duration of the operation: in such cases, you should use object synchronization or one of Java 5's explicit lock classes added.
+
+Now some typical uses.
+
+A "simple flag" accessed by multiple threads
+
+The most typical case is where:
+
+you write a variable, such as a flag, in one thread;
+you check that variable in another thread;
+crucially, the value to write doesn't depend on the current value...
+...or, you don't care about "missing an update".
+We looked at the example of a volatile flag to control a loop.
+
+The last point above outlaws cases such as x++ or x += 7, because this actually involves reading the current value, incrementing it, then setting the new value. A common bug with volatile is to assume that x++ is atomic. For cases where you need this functionality, consider AtomicInteger or related classes. Now, under some circumstances, you could make the decision to perform concurrent x++ operations anyway and "take the risk" that occasionally you'll miss an update.
+
+
+
+
+
+

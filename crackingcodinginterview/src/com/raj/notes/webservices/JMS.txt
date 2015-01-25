@@ -1,0 +1,34 @@
+JMS tutorial: http://docs.oracle.com/javaee/5/tutorial/doc/bncdx.html
+
+What Is a Message-Driven Bean?   [http://docs.oracle.com/javaee/5/tutorial/doc/bnbmd.html]
+A message-driven bean is an enterprise bean that allows Java EE applications to process messages asynchronously. It normally acts as a JMS message listener, which is similar to an event listener except that it receives JMS messages instead of events. The messages can be sent by any Java EE component (an application client, another enterprise bean, or a web component) or by a JMS application or system that does not use Java EE technology. Message-driven beans can process JMS messages or other kinds of messages.
+
+
+JMS vs HTTP?
+http://java.dzone.com/articles/performance-soaphttp-vs-soapjm
+Today SOA is the most prevalent enterprise architecture style. In most cases services (S in SOA) are realized using web
+services specification(s). Web services are, in most cases, implemented using HTTP as transport protocol but other
+options exists. As new architecture style emerges, such as EDA, more message friendly transport protocols pops out.
+In Java environments most used is JMS. In spite the fact that SOAP/JMS specification is still in draft, JMS is
+supported in all major (Java) WS stacks.
+
+Reasons to go with HTTP:
+ -Firewall friendly (web services exposed over internet)
+ -Supported on all platforms (easiest connectivity in b2b scenario)
+ -Clients can be simple and lightweight
+
+Reasons to go with JMS:
+ -Assured delivery and/or only once delivery
+ -Asynchronous support
+ -Publish/subscribe
+ -Queuing if better for achieving larger scalability and reliability
+ -Better handles temporary high load
+ -Large volume of messages
+ -Better support in middleware software
+ -Transaction boundary
+
+In SOA architecture best practice is to use JMS internally (for clients/providers that can easily connect to ESB*) and
+HTTP for connecting to outside partners (over internet).
+
+ESB : An enterprise service bus (ESB) is a software architecture model used for designing and implementing the
+interaction and communication between mutually interacting software applications in Service Oriented Architecture (SOA).

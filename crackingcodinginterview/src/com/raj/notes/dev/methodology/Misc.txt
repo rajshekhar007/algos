@@ -1,0 +1,195 @@
+--- AGILE ---
+Agile software development is a group of software development methods based on iterative and incremental development, where requirements and solutions evolve through collaboration between self-organizing, cross-functional teams. It promotes adaptive planning, evolutionary development and delivery, a time-boxed iterative approach, and encourages rapid and flexible response to change. It is a conceptual framework that promotes foreseen interactions throughout the development cycle.
+
+Twelve principles underlie the Agile Manifesto, including:
+-Customer satisfaction by rapid delivery of useful software
+-Welcome changing requirements, even late in development
+-Working software is delivered frequently (weeks rather than months)
+-Working software is the principal measure of progress
+-Sustainable development, able to maintain a constant pace
+-Close, daily co-operation between business people and developers
+-Face-to-face conversation is the best form of communication (co-location)
+-Projects are built around motivated individuals, who should be trusted
+-Continuous attention to technical excellence and good design
+-Simplicity- The art of maximizing the amount of work not done - is essential
+-Self-organizing teams
+-Regular adaptation to changing circumstances
+
+Agile methods break tasks into small increments with minimal planning and do not directly involve long-term planning.
+Iterations are short time frames (timeboxes) that typically last from one to four weeks also called 'Sprint'.
+
+Each iteration involves a cross functional team working in all functions: planning, requirements analysis, design,
+coding, unit testing, and acceptance testing. At the end of the iteration a working product is demonstrated to
+stakeholders. This minimizes overall risk and allows the project to adapt to changes quickly. An iteration might not
+add enough functionality to warrant a market release, but the goal is to have an available release (with minimal bugs)
+at the end of each iteration.
+
+Team members normally take responsibility for tasks that deliver the functionality an iteration requires. They decide
+individually how to meet an iteration's requirements.
+
+Team size is typically small (5-9 people) to simplify team communication and team collaboration.
+
+No matter what development disciplines are required, each agile team will contain a customer representative. This
+person is appointed by stakeholders to act on their behalf[11] and makes a personal commitment to being available for
+developers to answer mid-iteration questions. At the end of each iteration, stakeholders and the customer representative
+review progress and re-evaluate priorities with a view to optimizing the return on investment (ROI) and ensuring
+alignment with customer needs and company goals.
+
+Most agile implementations use a routine and formal daily face-to-face communication among team members. This
+specifically includes the customer representative and any interested stakeholders as observers. In a brief session,
+team members report to each other what they did the previous day, what they intend to do today, and what their
+roadblocks are. This face-to-face communication exposes problems as they arise. "These meetings, sometimes referred as
+daily stand-ups or daily scrum meetings, are held at the same place and same time every day and should last no more
+than 15 minutes.
+
+Agile development emphasizes working software as the primary measure of progress. This, combined with the preference for
+face-to-face communication, produces less written documentation than other methods.
+
+Specific tools and techniques, such as continuous integration, automated or xUnit test, pair programming, test-driven
+development, design patterns, domain-driven design, code refactoring and other techniques are often used to improve
+quality and enhance project agility.
+
+
+
+--- Scrum ---
+Scrum is an iterative and incremental agile software development method for managing software projects and product or
+application development.
+
+Core roles
+- Product Owner : The Product Owner represents the stakeholders and is the voice of the customer. He or she is
+accountable for ensuring that the team delivers value to the business. The Product Owner writes customer-centric items
+(typically user stories), prioritizes them, and adds them to the product backlog. Scrum teams should have one Product
+Owner, and while they may also be a member of the development team, it is recommended that this role not be combined
+with that of Scrum Master.
+
+- Development Team : The Development Team is responsible for delivering potentially shippable product increments at the
+end of each Sprint.
+
+- Scrum Master : Scrum is facilitated by a Scrum Master, sometimes written as ScrumMaster, who is accountable for
+removing impediments to the ability of the team to deliver the sprint goal/deliverables.
+The Scrum Master is not the team leader, but acts as a buffer between the team and any distracting influences.
+
+Terms:
+
+* Sprint : A sprint is the basic unit of development in Scrum. Sprints last between one week and one month. Each sprint
+is preceded by a planning meeting, where the tasks for the sprint are identified and an estimated commitment for the
+sprint goal is made, and followed by a review or retrospective meeting, where the progress is reviewed and lessons for
+the next sprint are identified.
+During each sprint, the team creates finished portions of a product. The set of features that go into a sprint come
+from the product backlog, which is an ordered list of requirements. Which backlog items go into the sprint
+(the sprint goals) is determined during the sprint planning meeting. During this meeting, the Product Owner informs the
+team of the items in the product backlog that he or she wants completed (the ones with the highest priority). The team
+then determines how much of this they can commit to complete during the next sprint, and records this in the sprint
+backlog. The sprint backlog is property of the development team, i.e. during a sprint, no one is allowed to edit the
+sprint backlog except for the development team. After a sprint is completed, the team demonstrates how to use the
+software.
+Scrum enables the creation of self-organizing teams by encouraging co-location of all team members, and verbal
+communication between all team members and disciplines in the project. Like other agile development methodologies,
+Scrum can be implemented through a wide range of tools.  Other organizations implement Scrum without the use of any
+tools, and maintain their artifacts in hard-copy forms such as paper, whiteboards, and sticky notes.
+
+* Sprint burn down chart : Daily progress for a Sprint over the sprint’s length.
+
+* Product backlog : A prioritized list of high-level requirements.
+
+* Sprint backlog : A prioritized list of tasks to be completed during the sprint.
+
+* (User) Story : A feature that is added to the backlog is commonly referred to as a story and has a specific suggested
+structure. The structure of a story is: "As a <user type> I want to <do some action> so that <desired result>"
+This is done so that the development team can identify the user, action and required result in a request and is a
+simple way of writing requests that anyone can understand.
+
+* Epic : An epic is a group of related stories, mainly used in product roadmaps and the backlog for features that have
+not yet been analyzed enough to break down into component stories, which should be done before bringing it into a sprint
+so to reduce uncertainty.
+
+* Spike : A time boxed period used to research a concept and/or create a simple prototype. Spikes can either be planned
+to take place in between sprints or, for larger teams, a spike might be accepted as one of many sprint delivery
+objectives. Spikes are often introduced before the delivery of large epics or user stories in order to secure budget,
+expand knowledge, and/or produce a proof of concept. The duration and objective(s) of a spike will be agreed between
+the Product Owner and Delivery Team before the start. Unlike sprint commitments, spikes may or may not deliver tangible,
+shippable, valuable functionality. For example, the objective of a spike might be to successfully reach a decision on a
+course of action. The spike is over when the time is up, not necessarily when the objective has been delivered.
+
+* Tracer Bullet : The tracer bullet is a spike with the current architecture, current technology set, current set of
+best practices which results in production quality code. It might just be a very narrow implementation of the
+functionality but is not throw away code. It is of production quality and rest of the iterations can build on this code.
+
+* Tasks : Added to the story at the beginning of a sprint and broken down into hours. Each task should not exceed 12 hrs
+but it's common for teams to insist that a task take no more than a day to finish.
+
+* Velocity : The total effort a team is capable of in a sprint. The number is derived by adding all the story points
+from the last sprint's stories/features. This is a guideline for the team and assists them in understanding how many
+stories they can do in a sprint.
+
+What’s Unique about Scrum?
+Of all the agile methodologies, Scrum is unique because it introduced the idea of “empirical process control.”
+That is, Scrum uses the real-world progress of a project.
+
+Difference between Agile & Scrum?
+Scrum is a type of agile approach that is used in development of software applications.
+
+Scrum in 10 minutes video:
+http://www.youtube.com/watch?v=XU0llRltyFM&noredirect=1
+
+--- TDD ---
+Test-driven development (TDD) is a software development process that relies on the repetition of a very short
+development cycle: first the developer writes an (initially failing) automated test case that defines a desired
+improvement or new function, then produces the minimum amount of code to pass that test and finally refactors the new
+code to acceptable standards.
+
+1. Add a test
+    In test-driven development, each new feature begins with writing a test. This test must inevitably fail because it
+    is written before the feature has been implemented. (If it does not fail, then either the proposed “new” feature
+    already exists or the test is defective.)
+
+2. Run all tests and see if the new one fails
+
+3. Write some code
+    The next step is to write some code that will cause the test to pass.
+
+4. Run the automated tests and see them succeed
+
+5. Refactor code
+    Now the code can be cleaned up as necessary. By re-running the test cases, the developer can be confident that code
+    refactoring is not damaging any existing functionality.
+
+- A 2005 study found that using TDD meant writing more tests and, in turn, programmers who wrote more tests tended to
+be more productive.
+
+--- Extreme Programming ---
+Extreme programming has been described as having 12 practices, grouped into four areas:
+
+Fine scale feedback
+-Pair programming
+-Planning game
+-Test-driven development
+-Whole team
+
+Continuous process
+-Continuous integration
+-Refactoring or design improvement
+-Small releases
+
+Shared understanding
+-Coding standards
+-Collective code ownership
+-Simple design
+-System metaphor
+
+Programmer welfare
+-Sustainable pace
+
+Coding
+-The customer is always available
+-Code the Unit test first
+-Only one pair integrates code at a time
+-Leave Optimization until last
+-No Overtime
+
+Testing
+-All code must have Unit tests
+-All code must pass all Unit tests before it can be released.
+-When a Bug is found tests are created before the bug is addressed (a bug is not an error in logic, it is a test you forgot to write)
+-Acceptance tests are run often and the results are published
+

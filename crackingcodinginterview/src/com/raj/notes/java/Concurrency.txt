@@ -1,0 +1,110 @@
+Links:
+http://docs.oracle.com/javase/tutorial/essential/concurrency/index.html
+
+--- Thread ---
+Each thread is associated with an instance of the class Thread. There are two basic strategies for using Thread objects to create a concurrent application.
+-To directly control thread creation and management, simply instantiate Thread or implement runnable each time the application needs to initiate an asynchronous task.
+-To abstract thread management from the rest of your application, pass the application's tasks to an executor.
+
+--- What is? ---
+Semaphore: Semaphores are often used to restrict the number of threads than can access some (physical or logical) resource.
+Mutex: A mutex is essentially the same thing as a binary semaphore, and sometimes uses the same basic implementation. However, the term "mutex" is used to describe a construct which prevents two processes from accessing a shared resource concurrently. The term "binary semaphore" is used to describe a construct which limits access to a single resource.
+Monitor: In concurrent programming, a monitor is an object or module intended to be used safely by more than one thread. The defining characteristic of a monitor is that its methods are executed with mutual exclusion. That is, at each point in time, at most one thread may be executing any of its methods.
+Monitors also provide a mechanism for threads to temporarily give up exclusive access, in order to wait for some condition to be met, before regaining exclusive access and resuming their task. Monitors also have a mechanism for signaling other threads that such conditions have been met.
+
+
+public class Example {
+
+    private int value = 0;
+    private final Semaphore mutex = new Semaphore(1)
+    public int getNextValue() throws InterruptedException {
+        try {
+            mutex.acquire();
+            return value++;
+            } finally {
+        mutex.release();
+    }
+  }
+}
+
+Semaphores are a powerful way to solve concurrency problems, but this is not adapted to all problems.
+If you only need mutual exclusion, synchronized blocks are a better solution. The problems with semaphores is that you
+can forget to call the release method and this can cause deadlocks that are sometimes difficult to find.
+
+public class Example {
+
+    private int value = 0;
+    public synchronized int getNextValue(){
+        return value++;
+    }
+}
+
+public class Example {
+    private int value = 0;
+    public int getNextValue() {
+        synchronized (this) {
+            return value++;
+        }
+    }
+}
+
+This is exactly the same as using the synchronized keyword on the method signature. Using synchronized blocks, you can
+choose the lock to block on. By example, if you don’t want to use the intrinsic lock of the current object but an other
+object, you can use an other object just as a lock :
+
+public class Example {
+
+    private int value = 0;
+    private final Object lock = new Object();
+    public int getNextValue() {
+        synchronized (lock) {
+            return value++;
+        }
+    }
+}
+
+http://www.baptiste-wicht.com/2010/09/java-concurrency-part-5-monitors-locks-and-conditions/
+
+Monitors are an other mechanism of concurrent programming. It’s a higher level mechanism than semaphores and also more powerful. A monitor is an instance of a class that can be used safely by several threads. All the methods of a monitor are executed with mutual exclusion. So at most one thread can execute a method of the monitor at the same time. This mutual exclusion policy makes easier to work with monitor and to develop the method content of the monitor.
+Monitors have an other feature, the possibility to make a thread waiting for a condition. During the wait time, the thread temporarily gives up its exclusive access and must reacquire it after the condition has been met. You can also signal one or more threads that a condition has been met.
+There is several advantages on using monitors instead of a lower-level mechanisms :
+All the synchronization code is centralized in one location and the users of this code don’t need to know how it’s implemented.
+The code doesn’t depend on the number of processes, it works for as many processes as you want
+You don’t need to release something like a mutex, so you cannot forget to do it.
+
+Java Reentrant Locks
+Java has a few lock implementations in the java.util.concurrent.locks package.
+The general classes of locks are nicely laid out as interfaces:
+Lock – the simplest case of a lock which can be acquired and released
+ReadWriteLock – a lock implementation that has both read and write lock types – multiple read locks can be held at a time unless the exclusive write lock is held
+Java provides two implementations of these locks that we care about – both of which are reentrant (this just means a thread can reacquire the same lock multiple times without any issue).
+
+ReentrantLock – as you’d expect, a reentrant Lock implementation
+ReentrantReadWriteLock – a reentrant ReadWriteLock implementation
+
+public class SimpleMonitor {
+
+    private final Lock lock = new ReentrantLock();
+    public void testA() {
+        lock.lock();
+        try {
+            //Some code
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public int testB() {
+        lock.lock();
+        try {
+            return 1;
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+
+
+
+
+

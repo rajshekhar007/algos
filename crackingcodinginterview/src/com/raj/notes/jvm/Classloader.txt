@@ -1,0 +1,36 @@
+Links:
+http://geekexplains.blogspot.com/2008/06/classloaders-in-java-how-do-they-work.html
+
+How the Class-loading mechanism work in Java?
+- bootstrap classloader
+- extension classloader
+- application classloader
+
+Whenever you try to execute a Java program by invoking the 'java' command then a native Java launcher program is first
+invoked. This launcher program is 'native' and hence platform dependent. Well... quite obvious, isn't it? Now, on a
+successful invokation of this launcher program, it calls the bootstrap classloader program. This bootstrap loader
+program then loads the Core Java classes (classes belonging to the packages starting with 'java.') and then loads two
+other classloaders - extension classloader and application classloader. That's it. The job of the bootstrap classloader
+is done once it completes these three tasks - One, loading Core Java classes; Two, loading extension classloader;
+Three, loading application classloader.
+
+The bootstrap classloader transfer the control to the extension classloader, which then loads the extension classes into
+the memory. What are extension classes in Java? They are classes belonging to all the packages starting with 'javax.'
+OR the classes present in the 'ext' directory of the underlying JRE. You may like to go through the post Extension
+Mechanism in Java for more details.
+
+Finally the control is transferred to the application classloader, which loads the classes of the current application.
+
+One interesting point to note here is that all the three classloaders follow the delegation model i.e., if the
+application classloader requires to load a class, it'll first delegate a request for the same class to the extension
+classloader, which will in turn send a request to the bootstrap classloader for the same class. Now, the bootstrap
+classloader will check if that class is a Core Java class or not. If yes, then it'll make that available to the
+extension classloader in response to its request and finally the extension classloader will make that available to
+application classloader. If the bootstrap classloader discovers that the requested class if not a Core Java class, it
+notifies the same to the extension classloader. Now the extension classloader checks if this class is an extension class
+ or not. If it discoveres that it's an extension class, it makes that available to the application classloader otherwise
+it notifies the application classloader that the requested class is not even an extension class. The application
+classloader itself loads a class in this case (when it has got notifications that the requested class is neither a
+Core Java class nor an extension class).
+
+

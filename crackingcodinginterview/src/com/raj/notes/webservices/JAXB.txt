@@ -1,0 +1,28 @@
+http://www.vogella.com/articles/JAXB/article.html
+
+Java Architecture for XML Binding (JAXB) allows Java developers to map Java classes to XML representations.
+JAXB provides two main features: the ability to marshal Java objects into XML and the inverse, i.e. to unmarshal XML
+back into Java objects.
+
+ // create JAXB context and instantiate marshaller
+    JAXBContext context = JAXBContext.newInstance(Bookstore.class);
+    Marshaller m = context.createMarshaller();
+    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+    m.marshal(bookstore, System.out);
+
+    Writer w = null;
+    try {
+      w = new FileWriter(BOOKSTORE_XML);
+      m.marshal(bookstore, w);
+    } finally {
+      try {
+        w.close();
+      } catch (Exception e) {
+      }
+    }
+
+    // get variables from our xml file, created before
+    System.out.println();
+    System.out.println("Output from our XML File: ");
+    Unmarshaller um = context.createUnmarshaller();
+    Bookstore bookstore2 = (Bookstore) um.unmarshal(new FileReader(BOOKSTORE_XML));

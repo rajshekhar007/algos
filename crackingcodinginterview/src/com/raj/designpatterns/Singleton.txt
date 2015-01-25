@@ -1,0 +1,94 @@
+ Multiple singletons simultaneously loaded by different class loaders :
+ When two class loaders load a class, you actually have two copies of the class, and each one can have its own singleton
+ instance. That is particularly relevant in servlets running in certain servlet engines (iPlanet for example), where each
+ servlet by default uses its own class loader. Two different servlets accessing a joint singleton will, in fact, get two
+ different objects.
+
+ Multiple class loaders occur more commonly than you might think. When browsers load classes from the network for use by
+ applets, they use a separate class loader for each server address. Similarly, Jini and RMI systems may use a separate
+ class loader for the different code bases from which they download class files. If your own system uses custom class
+ loaders, all the same issues may arise.
+
+ If loaded by different class loaders, two classes with the same name, even the same package name, are treated as
+ distinct -- even if, in fact, they are byte-for-byte the same class. The different class loaders represent different
+ namespaces that distinguish classes (even though the classes' names are the same), so that the two MySingleton classes
+ are in fact distinct. (See "Class Loaders as a Namespace Mechanism" in Resources.) Since two singleton objects belong
+ to two classes of the same name, it will appear at first glance that there are two singleton objects of the same class.
+
+ Singleton classes destroyed by garbage collection, then reloaded:
+ When a singleton class is garbage-collected and then reloaded, a new singleton instance is created. Any class can be
+ garbage-collected when no other object holds reference to the class or its instances. If no object holds a reference to
+ the singleton object, then the singleton class may disappear, later to be reloaded when the singleton is again needed.
+ In that case, a new singleton object will be created. Any static or instance fields saved for the object will be lost
+ and reinitialized. This problems exists in older VMs only[The VM in those releases was much too aggressive about
+ unloading (and garbage collecting) Class objects: If the only reference to an object of a given class was a
+ self-referential static member of the Class object, then the VM would unload the class from memory, thereby destroying
+ our only copy of the singleton. The next time someone tried to get an instance, the class would be reloaded and a
+ second instance of the singleton would be created].
+ JDK 1.2 VMs, in particular, conform to a newer class garbage collection model that forbids any class in a given
+ classloader to be collected until all are unreferenced (see Programming Java threads in the real world, Part 7" in
+ Resources).
+
+ How can we break Singleton:
+ 1. Not using synchronized methods/blocks.
+
+ 2. if you are using multiple classloaders, this could defeat the Singleton implementation and result in multiple
+    instances.
+
+Solution:
+
+Because multiple classloaders are commonly used in many situations—including servlet containers—you can wind up with
+multiple singleton instances no matter how carefully you've implemented your singleton classes. If you want to make sure
+the same classloader loads your singletons, you must specify the classloader yourself; for example:
+
+private static Class getClass(String classname)
+                                         throws ClassNotFoundException {
+      ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+      if(classLoader == null)
+         classLoader = Singleton.class.getClassLoader();
+      return (classLoader.loadClass(classname));
+   }
+}
+
+
+The preceding method tries to associate the classloader with the current thread; if that classloader is null, the
+method uses the same classloader that loaded a singleton base class. The preceding method can be used instead of
+Class.forName().
+
+3. If SingletonClass implements the java.io.Serializable interface, the class's instances can be serialized and
+deserialized. However, if you serialize a singleton object and subsequently deserialize that object more than once, you
+will have multiple singleton instances.
+
+   Solution:
+
+   To avoid the above you need to implement readResolve() method.
+
+
+   private Object readResolve() {
+       return INSTANCE;
+   }
+
+
+The previous singleton implementation returns the lone singleton instance from the readResolve() method; therefore,
+whenever the Singleton class is deserialized, it will return the same singleton instance.
+
+
+4. We will be able to create a copy of the Object by cloning it using the Object’s clone method.
+
+Solution:
+
+Override the Object clone method to prevent cloning.
+
+This can be done as shown below:
+SingletonDemo clonedObject = (SingletonDemo) obj.clone();
+
+This again violates the Singleton Design Pattern’s objective. So to deal with this we need to override the Object’s
+clone method which throws a CloneNotSupportedException exception.
+
+public Object clone() throws CloneNotSupportedException {
+throw new CloneNotSupportedException();
+}
+
+
+* When to use :
+    We can use this while creating objects of thread pools, caches etc to avoid wasting resources.

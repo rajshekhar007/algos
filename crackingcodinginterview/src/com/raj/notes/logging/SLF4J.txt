@@ -1,0 +1,25 @@
+http://slf4j.org/manual.html
+
+The Simple Logging Facade for Java or (SLF4J) serves as a simple facade or abstraction for various logging frameworks,
+such as:
+ - java.util.logging
+ - log4j
+ - logback
+
+SLF4J allows the end-user to plug in the desired logging framework at deployment time. Note that SLF4J-enabling your
+library/application implies the addition of only a single mandatory dependency, namely slf4j-api-1.7.2.jar
+
+Note that SLF4J-enabling your library implies the addition of only a single mandatory dependency, namely slf4j-api.jar.
+If no binding is found on the class path, then SLF4J will default to a no-operation implementation.
+
+* In my opinion, SLF4J is the best logging API available, mostly because of a great pattern substitution support:
+
+log.debug("Found {} records matching filter: '{}'", records, filter);
+
+In Log4j you would have to use:
+log.debug("Found " + records + " records matching filter: '" + filter + "'");
+
+This is not only longer and less readable, but also inefficient because of extensive use of string concatenation.
+SLF4J adds a nice {} substitution feature. Also, because string concatenation is avoided and toString() is not called
+if the logging statement is filtered, there is no need for isDebugEnabled() anymore.
+
