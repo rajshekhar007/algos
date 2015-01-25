@@ -1,0 +1,70 @@
+http://www.vogella.com/articles/REST/article.html
+
+1. REST - Representational State Transfer
+1.1. Overview
+REST is an architectural style which is based on web-standards and the HTTP protocol. REST was first described by Roy Fielding in 2000.
+
+In a REST based architecture everything is a resource. A resource is accessed via a common interface based on the HTTP standard methods.
+
+In a REST based architecture you typically have a REST server which provides access to the resources and a REST client which accesses and modify the REST resources.
+
+Every resource should support the HTTP common operations. Resources are identified by global IDs (which are typically URIs).
+
+REST allows that resources have different representations, e.g. text, xml, json etc. The rest client can ask for specific representation via the HTTP protocol (content negotiation).
+
+
+Idempotent: Borrowed from the world of maths, idempotent has the meaning in computer software that you are able to rerun something because the process of running it did not change its state. Think of a function that returns a customer's address details from a database and can be run any number of times. That procedure is idempotent as it changes nothing in the database.
+
+1.2. HTTP methods
+The PUT, GET, POST and DELETE methods are typical used in REST based architectures.
+
+The following table gives an explanation of these operations.
+
+GET defines a reading access of the resource without side-effects. The resource is never changed via a GET request, e.g. the request has no side effects (idempotent).
+
+PUT creates a new resource, must also be idempotent.
+
+DELETE removes the resources. The operations are idempotent, they can get repeated without leading to different results.
+
+POST updates an existing resource or creates a new resource.
+
+1.3. RESTFul webservices
+A RESTFul webservices are based on the HTTP methods and the concept of REST. A RESTFul webservice typically defines the
+base URI for the services, the supported MIME-types (XML, Text, JSON, user-defined,..) and the set of operations (POST,
+GET, PUT, DELETE) which are supported.
+
+Building RESTful Web Services with JAX-RS [ The Java EE 6 Tutorial http://docs.oracle.com/javaee/6/tutorial/doc/giepu.html]
+JAX-RS is part of the Java EE6
+This chapter describes the REST architecture, RESTful web services, and the Java API for RESTful Web Services
+(JAX-RS, defined in JSR 311).
+
+Jersey, the reference implementation of JAX-RS, implements support for the annotations defined in JSR 311, making it
+easy for developers to build RESTful web services by using the Java programming language.
+
+http://www.mkyong.com/tutorials/jax-rs-tutorials/
+Java API for RESTful Web Services (JAX-RS), is a set if APIs to developer REST service. JAX-RS is part of the Java EE6,
+and make developers to develop REST web application easily.
+
+In this series of JAX-RS tutorials, we use both, popular JAX-RS implementation :
+- Jersey
+- RESTEasy : RESTEasy
+             RESTEasy is a JBoss project that provides various frameworks to help you build RESTful Web Services and
+             RESTful Java applications. It is a fully certified and portable implementation of the JAX-RS specification.
+             JAX-RS is a new JCP specification that provides a Java API for RESTful Web Services over the HTTP protocol.
+
+             Features:
+             Fully certified JAX-RS implementation
+             Portable to any app-server/Tomcat that runs on JDK 5 or higher
+             Embeddedable server implementation for junit testing
+             Client framework that leverages JAX-RS annotations so that you can write HTTP clients easily (JAX-RS only defines server bindings)
+             Client "Browser" cache. Supports HTTP 1.1 caching semantics including cache revalidation
+             Server in-memory cache. Local response cache. Automatically handles ETag generation and cache revalidation
+             Rich set of providers for: XML, JSON, YAML, Fastinfoset, Multipart, XOP, Atom, etc.
+             JAXB marshalling into XML, JSON, Jackson, Fastinfoset, and Atom as well as wrappers for maps, arrays, lists, and sets of JAXB Objects.
+             GZIP content-encoding. Automatic GZIP compression/decompression suppport in client and server frameworks
+             Asynchronous HTTP (Comet) abstractions for JBoss Web, Tomcat 6, and Servlet 3.0
+             Asynchronous Job Service.
+             Rich interceptor model.
+             Digital Signature and encryption support with S/MIME and DOSETA
+             EJB, Seam, Guice, Spring, and Spring MVC integration
+

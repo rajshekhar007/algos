@@ -1,0 +1,16 @@
+URL matrix parameters vs. request parameters?
+
+The important difference is that matrix parameters apply to a particular path element while query parameters apply to
+the request as a whole. This comes into play when making a complex REST-style query to multiple levels of resources and
+sub-resources:
+http://example.com/res/categories;name=foo/objects;name=green/?page=1
+
+It really comes down to a matter of name-spacing. If only query parameters were used here, you would end up with
+parameters like "category_name" and "object_name" and you would lose the clarity added by the locality of the parameters
+within the request. In addition, when using a framework like JAX-RS, all the query parameters would show up within each
+resource handler, leading to potential conflicts and confusion.
+
+If your query has only one "level", then the difference is not really important and the two types of parameters are
+effectively interchangeable, however query parameters are generally better supported and more widely recognized. In
+general, I would recommend that you stick with query parameters for things like HTML forms and simple, single-level
+HTTP APIs.

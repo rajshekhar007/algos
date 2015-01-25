@@ -1,0 +1,35 @@
+http://docs.oracle.com/javase/tutorial/networking/sockets/index.html
+
+- URLs and URLConnections provide a relatively high-level mechanism for accessing resources on the Internet.
+Sometimes your programs require lower-level network communication, for example, when you want to write a client-server
+application.
+
+- TCP provides a reliable, point-to-point communication channel that client-server applications on the Internet use to
+communicate with each other. To communicate over TCP, a client program and a server program establish a connection to
+one another. Each program binds a socket to its end of the connection. To communicate, the client and the server each
+reads from and writes to the socket bound to the connection.
+
+- A socket is one endpoint of a two-way communication link between two programs running on the network. A socket is
+bound to a port number so that the TCP layer can identify the application that data is destined to be sent.
+
+http://127.0.0.1:8080/service/resource
+                 PORT
+                                      <--- Connection request ---
+                 SERVER | PORT :     -------- CONNECTION --------     : PORT | CLIENT
+
+
+- An endpoint is a combination of an IP address and a port number. Every TCP connection can be uniquely identified by
+its two endpoints. That way you can have multiple connections between your host and the server. The java.net package in
+the Java platform provides a class, Socket, that implements one side of a two-way connection between your Java program
+and another program on the network. The Socket class sits on top of a platform-dependent implementation, hiding the
+details of any particular system from your Java program. By using the java.net.Socket class instead of relying on native
+code, your Java programs can communicate over the network in a platform-independent fashion. Additionally, java.net
+includes the ServerSocket class, which implements a socket that servers can use to listen for and accept connections to
+clients.
+
+- Normally, a server runs on a specific computer and has a socket that is bound to a specific port number. The server
+just waits, listening to the socket for a client to make a connection request.
+- On the client-side: The client knows the hostname of the machine on which the server is running and the port number on
+which the server is listening. To make a connection request, the client tries to rendezvous with the server on the
+server's machine and port. The client also needs to identify itself to the server so it binds to a local port number
+that it will use during this connection. This is usually assigned by the system.

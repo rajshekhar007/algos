@@ -1,0 +1,142 @@
+Link: http://geekexplains.blogspot.com/2009/02/threadlocal-inheritablethreadlocal-in.html
+
+ThreadLocal in Java - what is it used for?
+
+As the name suggests this Java library class is used for supporting thread-local variables - the variables which are local to the particular thread instance and hence each thread will have their own copy of such variables which will be initialized every time a new thread is spawned.
+
+To be more clear, let's take one simple example. If you have a class having some private/public static fields defined in it then all the objects created in all threads will share the same instances of those static fields. What if you want every thread to have a separate copy of it? ThreadLocal class will be of use in such cases, in fact they are mainly used for this purpose only. You can't just switch to a non-static field as in that case all the objects (even those created in the same thread) will have their own copies. You may come across situations asking you to have copies based on threads and not based on instances. This is where you will probably like to use ThreadLocal.
+
+This class was introduced to Java in the version 1.2 and it has only three methods - one protected (initialValue()) and two public (get() and set()). The method set() is only rarely used as for most of the applications use the initialValue() method does the trick.
+protected Object initialValue() - as the name suggests this method returns the initial value of the ThreadLocal variable for the current thread and it's invoked at most once per thread. This method will be executed only if the thread calls the get() method on the ThreadLocal variable for the time and also only if the thread doesn't call set() method on the ThreadLocal variable prior to calling get() on it. As already mentioned that initialValue() method is called only when get() is called for the first time and hence if the thread calls set() method before get() then the initialValue() will never be executed on that ThreadLocal variable.
+public Object get() - evidently it will return the value of the ThreadLocal variable for the current thread. As discussed above, if it's called for the first time then the ThreadLocal variable is created and initialized by calling the initialValue() method internally.
+public void set(Object value) - like any other setter this method will also set the current thread's copy of the ThreadLocal variable to the passed 'value'. This method is used only rarely as in most of the cases initialValue() method solves the purpose in a better way.
+
+initialValue() method v/s set() method for a ThreadLocal variable
+
+initialValue() method is called at most once and it's called only implicitly whereas set() method can be called any number of times and every time the call will be an explicit call.
+initialValue() is called when get() method is called for the first time on the ThreadLocal variable in the current thread and that too only when set() method has not been called before the first get() call (in which case initialValue() method is never called in that thread on that ThreadLocal variable).
+
+Overriding the initialValue() method and using it in an application
+
+initialValue() method is a protected method which initializes the ThreadLocal variable with 'null' in its default implementation and almost every time we need to override this method to initialize the ThreadLocal variable as per our requirements. Anonymous inner classes are normally used for this overriding to make the code more readable and maintainable. Let's walk through the sample code given in the Sun Javadoc for ThreadLocal.
+
+
+public class SerialNum {
+ // The next serial number to be assigned
+ private static int nextSerialNum = 0;
+
+ private static ThreadLocal serialNum = new ThreadLocal() {
+     protected synchronized Object initialValue() {
+         return new Integer(nextSerialNum++);
+     }
+ };
+
+ public static int get() {
+     return ((Integer) (serialNum.get())).intValue();
+ }
+}
+
+
+In the above example, changes made to the private static int field named 'nextSerialNum' will be reflected in all the threads using the 'SerialNum' class as it's a normal static field and will be shared across all the instances created in all the threads, but the static ThreadLocal field named 'serialNum' will be created and maintained separately for all the threads and will not be shared across all the threads.
+
+As you can see that anonymous inner class has been used to override the initialValue() method which sets the initial value of the ThreadLocal variable 'serialNum' to the Integer object created with the current value of the static field 'nextSerialNum'.
+
+A call to the get method of the 'SerialNum' class will ultimately call the get() method on the ThreadLocal variable 'serialNum' and if the first outer get (of the SerialNum class) call will obviously make the first inner get (of the ThreadLocal class) call on the ThreadLocal instance 'serialNum' which will subsequently invoke the initialValue() on the ThreadLocal variable in the current thread.
+
+InheritableThreadLocal - what's this and when to use it?
+
+Suppose you have a requirement of setting the value of a ThreadLocal variable in a child thread as a function of the value of a ThreadLocal variable in the parent thread, then using a normal ThreadLocal variable won't do the needful as for ThreadLocal variables the initial values are set independently in every thread including any child threads as well.
+
+InheritableThreadLocal which subclasses ThreadLocal class is used in such situations. This class has only one method 'protected Object childValue(Object parentValue)' which is used to set the initial value of the InheritableThreadLocal variable in the child thread as a function of a ThreadLocal variable (passed as a parameter) in the parent thread. This method is called from within the parent thread before the child thread is created and the default implementation will make the child values identical to parent's, but we can override the childValue() method to set the child value as a function of the parent value for those ThreadLocals which have values in the parent thread. By default the childValue() returns the same input argument, but again an override of the childValue method might change this behavior as well.
+
+
+Per thread singleton Link:
+http://geekexplains.blogspot.com/2009/08/per-thread-singleton-and-per-thread.html
+
+Usage of ThreadLocal: per-thread Singleton and per-thread Logging
+
+Should you require a refresh of what ThreadLocals in Java are and how they work, refer to this article first. You can then proceed with the current article for understanding two of the most common uses of ThreadLocals in Java.
+
+per-thread Singleton impl using ThreadLocal
+
+Suppose you have a need of having a JDBC Connection objects per thread of your application. The moment you hear the term 'per-thread', ThreadLocal automatically comes into mind as that's what it's primarily meant for. Below is a sample implementation of how easily can you actually use ThreadLocal for a per-thread JDBC Connection object in Java.
+
+
+public class ConnectionDispenser {
+
+ private static class ThreadLocalConnection extends ThreadLocal {
+
+   public Object initialValue() {
+
+     return DriverManager.getConnection(ConfigurationSingleton.getDbUrl());
+
+   }
+
+ }
+
+ private static ThreadLocalConnection conn = new ThreadLocalConnection();
+
+ public static Connection getConnection() {
+
+   return (Connection) conn.get();
+
+ }
+
+}
+
+
+Most of the code is self-explanatory and you can easily see how overriding the 'initialValue()' method of ThreadLocal is doing the trick of getting a Connection object by calling 'getConnection' method of the 'DriverManager' class. As you know the 'initialValue()' method is called only once for a ThreadLocal object and hence the Connection object will be obtained only once per thread (as a ThreadLocal object is created per thread only). From then on, whenever the particular thread requires the Connection object it simply calls the static 'getConnection' method of the your 'ConnectionDispenser' class, which in turn calls the 'get()' method of ThreadLocal to fetch the Connection object associated with that particular thread.
+
+per-thread Debug Logging impl using ThreadLocal
+
+Ever thought of having a per-thread DEBUG logging for any of your applications? Few multi-threading applications do get trickier at times and having per-thread DEBUG logs might be of great help in such situations as you probably can't visualize the actual order in which the threads might have executed and changed the shared objects. Here goes a sample implementation of per-thread DEBUG logging in Java using ThreadLocal.
+
+
+public class DebugLogger {
+
+ private static class ThreadLocalList extends ThreadLocal {
+
+   public Object initialValue() {
+
+     return new ArrayList();
+
+   }
+
+   public List getList() {
+
+     return (List) super.get();
+
+   }
+
+ }
+
+
+ private ThreadLocalList list = new ThreadLocalList();
+
+ private static String[] stringArray = new String[0];
+
+
+ public void clear() {
+
+   list.getList().clear();
+
+ }
+
+
+ public void put(String text) {
+
+   list.getList().add(text);
+
+ }
+
+
+ public String[] get() {
+
+   return list.getList().toArray(stringArray);
+
+ }
+
+}
+
+
+As you can identify we are using an ArrayList object to store the logging info for a thread. 'initialValue' has been overridden to initialize every thread with a new ArrayList object. Whenever your multi-threaded application calls the 'put' method of your 'DebugLogger' class then all that method does is that it adds the logging info (passed as an String parameter to the 'put' call) to the corresponding ArrayList object of the current thread. Similarly a 'get' call of your 'DebugLogger' class simply returns the associated ArrayList object of the current thread in form of an String array. Evidently the 'clear' method of your 'DebugLogger' class is for clearing the logging info captured so far for the current thread - it'll simply clear the ArrayList object holding logging info for the current thread. This might help you getting rid of the non-essential logging info, maybe based on some condition, when you know for sure that all that you need for your debugging is what you are going to capture next and now what has already been captured so far.

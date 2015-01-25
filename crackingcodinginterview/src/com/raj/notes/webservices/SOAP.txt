@@ -1,0 +1,320 @@
+http://www.ajaxonomy.com/2008/xml/web-services-part-1-soap-vs-rest
+
+SOAP:
+SOAP, originally defined as Simple Object Access Protocol, is a protocol specification for exchanging structured information in the implementation of Web Services in computer networks. It relies on Extensible Markup Language (XML) for its message format, and usually relies on other Application Layer protocols, most notably Hypertext Transfer Protocol (HTTP) and Simple Mail Transfer Protocol (SMTP), for message negotiation and transmission.
+Example message
+
+POST /InStock HTTP/1.1
+Host: www.example.org
+Content-Type: application/soap+xml; charset=utf-8
+Content-Length: 299
+SOAPAction: "http://www.w3.org/2003/05/soap-envelope"
+
+<?xml version="1.0"?>
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+  <soap:Header>
+  </soap:Header>
+  <soap:Body>
+    <m:GetStockPrice xmlns:m="http://www.example.org/stock">
+      <m:StockName>IBM</m:StockName>
+    </m:GetStockPrice>
+  </soap:Body>
+</soap:Envelope>
+
+Advantages:
+SOAP is versatile enough to allow for the use of different transport protocols. The standard stacks use HTTP as a transport protocol, but other protocols such as JMS[6] and SMTP[7] are also usable.
+Since the SOAP model tunnels fine in the HTTP get/response model, it can tunnel easily over existing firewalls and proxies, without modifications to the SOAP protocol, and can use the existing infrastructure.
+
+Disadvantages:
+Because of the verbose XML format, SOAP can be considerably slower than competing middleware technologies such as CORBA or ICE. This may not be an issue when only small messages are sent.[8] To improve performance for the special case of XML with embedded binary objects, the Message Transmission Optimization Mechanism was introduced.
+
+http://www.mkyong.com/tutorials/jax-ws-tutorials/
+
+
+--- Web Services, Part 1: SOAP vs. REST ----
+
+Developers new to web services are often intimidated by parade of technologies and concepts required to understand it:
+REST, SOAP, WSDL, XML Schema, Relax NG, UDDI, MTOM, XOP, WS-I, WS-Security, WS-Addressing, WS-Policy, and a host of
+other WS-* specifications that seem to multiply like rabbits. Add to that the Java specifications, such as
+
+    JAX-WS: Java API for XML Web Services (JAX-WS), is a set of APIs for creating web services in XML format (SOAP).
+        JAX-WS provides many annotation to simplify the development and deployment for both web service clients and web
+        service providers (endpoints). In this tutorials, it provides many step by step examples and explanations on
+        both JAX-WS 2.0 and JAXWS 2.1
+
+        Client                                            Service
+        JAX-RS runtime      <--- SOAP msg --->            JAX-RS runtime
+
+        http://www.mkyong.com/webservices/jax-ws/jax-ws-hello-world-example/
+        Ways:
+            - Create a SOAP-based RPC style web service endpoint by using JAX-WS.
+            - Create a Java web service client manually.
+            - Create a Java web service client via wsimport tool.
+            - Create a Ruby web service client.
+
+        SOAP Message handlers:
+            http://www.mkyong.com/webservices/jax-ws/jax-ws-soap-handler-in-server-side/
+            SOAP handler is a SOAP message interceptor, which is able to intercept incoming or outgoing SOAP message and
+            manipulate its values. For example, attach a SOAP handler in client side, which will inject client’s
+            computer MAC address into the SOAP header block for every outgoing SOAP message that is send by the client.
+            In server side, attach another SOAP handler, to retrieve back the client’s MAC address in SOAP header block
+            from every incoming SOAP message. So that the server side is able to determine which computer is allow to
+            access the published service.
+
+            http://www.mkyong.com/webservices/jax-ws/jax-ws-soap-handler-in-client-side/
+            1. Web Service Client
+            Uses wsimport command to parse the published service WSDL file (http://localhost:8888/ws/server?wsdl) and
+            generate all required files to access the service.
+
+            C:\>wsimport -keep -verbose http://localhost:8888/ws/server?wsdl
+            parsing WSDL...
+            generating code...
+            com\mkyong\ws\GetServerName.java
+            com\mkyong\ws\GetServerNameResponse.java
+            com\mkyong\ws\ObjectFactory.java
+            com\mkyong\ws\ServerInfo.java
+            com\mkyong\ws\ServerInfoService.java
+            com\mkyong\ws\package-info.java
+            ......
+
+        http://www.mkyong.com/webservices/jax-ws/jax-ws-spring-integration-example/
+
+
+    JAX-RPC: http://docs.oracle.com/javaee/1.4/tutorial/doc/JAXRPC3.html
+
+    SAAJ: The SOAP with Attachments API for Java or SAAJ provides a standard way to send XML documents over the Internet from the Java platform.
+
+      SAAJ enables developers to produce and consume messages conforming to the SOAP 1.1 specification and SOAP with Attachments note.
+
+      Developers can also use it to write SOAP messaging applications directly instead of using JAX-RPC or JAX-WS.
+      Java EE5 [http://docs.oracle.com/javaee/5/tutorial/doc/bnbhg.html]
+      SAAJ messages follow SOAP standards, which prescribe the format for messages and also specify some things that are
+      required, optional, or not allowed. With the SAAJ API, you can create XML messages that conform to the SOAP 1.1 or
+      1.2 specification and to the WS-I Basic Profile 1.1 specification simply by making Java API calls.
+
+            SOAPConnectionFactory factory = SOAPConnectionFactory.newInstance();
+            SOAPConnection connection = factory.createConnection();
+
+            . . .// create a request message and give it content
+
+            java.net.URL endpoint = new URL("http://fabulous.com/gizmo/order");
+            SOAPMessage response = connection.call(request, endpoint);
+            Note that the second argument to the call method, which identifies where the message is being sent, can be
+            a String object or a URL object. Thus, the last two lines of code from the preceding example could also have
+            been the following:
+
+            String endpoint = "http://fabulous.com/gizmo/order";
+            SOAPMessage response = connection.call(request, endpoint);
+
+
+
+Introduction [Web Services, Part 1: SOAP vs. REST contd...]
+
+There are currently two schools of thought in developing web services: the traditional, standards-based approach (SOAP)
+and conceptually simpler and the trendier new kid on the block (REST). The decision between the two will be your first
+choice in designing a web service, so it is important to understand the pros and cons of the two. It is also important,
+in the sometimes heated debate between the two philosophies, to separate reality from rhetoric.
+
+SOAP
+
+In the beginning there was...SOAP. Developed at Microsoft in 1998, the inappropriately-named "Simple Object Access
+Protocol" was designed to be a platform and language-neutral alternative to previous middleware* techologies like CORBA
+and DCOM. Its first public appearance was an Internet public draft (submitted to the IETF) in 1999; shortly thereafter,
+in December of 1999, SOAP 1.0 was released. In May of 2000 the 1.1 version was submitted to the W3C where it formed the
+heart of the emerging Web Services technologies. The current version is 1.2, finalized in 2005.
+The examples given in this article will all be SOAP 1.2.
+
+* Middleware: In its most general sense, middleware is computer software that provides services to software applications beyond those available from the operating system. Middleware can be described as "software glue".[1] Thus middleware is not obviously part of an operating system, not a database management system, and neither is it part of one software application. Middleware makes it easier for software developers to perform communication and input/output, so they can focus on the specific purpose of their application.
+
+Together with WSDL and XML Schema, SOAP has become the standard for exchanging XML-based messages. SOAP was also
+designed from the ground up to be extensible, so that other standards could be integrated into it--and there have been
+many, often collectively referred to as WS-*: WS-Addressing, WS-Policy, WS-Security, WS-Federation, WS-ReliableMessaging
+, WS-Coordination, WS-AtomicTransaction, WS-RemotePortlets, and the list goes on. Hence much of the perceived complexity
+of SOAP, as in Java, comes from the multitude of standards which have evolved around it. This should not be reason to be
+too concerned: as with other things, you only have to use what you actually need.
+
+The basic structure of SOAP is like any other message format (including HTML itself): header and body.
+In SOAP 1.2 this would look something like:
+
+<env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope">
+ <env:Header>
+     <!-- Header information here -->
+ </env:Header>
+ <env:Body>
+    <!-- Body or "Payload" here, a Fault if error happened -->
+ </env:Body>
+</env:Envelope>
+Note that the <Header> element is optional here, but the <Body> is mandatory.
+
+The SOAP <Header>
+SOAP uses special attributes in the standard "soap-envelope" namespace to handle the extensibility elements that can be defined in the header. The most important of these is the mustUnderstand attribute.
+
+The SOAP <Body>
+The SOAP body contains the "payload" of the message, which is defined by the WSDL's <Message> part. If there is an error that needs to be transmitted back to the sender, a single <Fault> element is used as a child of the <Body>.
+
+The SOAP <Fault>
+The <Fault> is the standard element for error handling. When present, it is the only child element of the SOAP <Body>. The structure of a fault looks like:
+<env:Fault xmlns:m="http://www.example.org/timeouts">
+   <env:Code>
+     <env:Value>env:Sender</env:Value>
+     <env:Subcode>
+      <env:Value>m:MessageTimeout</env:Value>
+     </env:Subcode>
+   </env:Code>
+   <env:Reason>
+     <env:Text xml:lang="en">Sender Timeout</env:Text>
+   </env:Reason>
+   <env:Detail>
+     <m:MaxTime>P5M</m:MaxTime>
+   </env:Detail>
+</env:Fault>
+
+Here, only the <Code> and <Reason> child elements are required, and the <Subcode> child of <Code> is also optional. The body of the Code/Value element is a fixed enumeration with the values:
+-VersionMismatch: this indicates that the node that "threw" the fault found an invalid element in the SOAP envelope, either an incorrect namespace, incorrect local name, or both.
+-MustUnderstand: as discussed above, this code indicates that a header element with the attribute mustUnderstand="true" could not be processed by the node throwing the fault. A NotUnderstood header block should be provided to detail all of the elements in the original message which were not understood.
+-DataEncodingUnknown: the data encoding specified in the envelope's encodingSytle attribute is not supported by the node throwing the fault.
+-Sender: This is a "catch-all" code indicating that the message sent was not correctly formed or did not have the appropriate information to succeed.
+-Receiver: Another "catch-all" code indicating that the message could not be processed for reasons attributable to the processing of the message rather than to the contents of the message itself.
+
+
+SOAP Encoding
+
+Section 5 of the SOAP 1.1 specification describes SOAP encoding, which was originally developed as a convenience for
+serializing and de-serializing data types to and from other sources, such as databases and programming languages.
+Problems, however, soon arose with complications in reconciling SOAP encoding and XML Schema, as well as with
+performance. The WS-I organization finally put the nail in the coffin of SOAP encoding in 2004 when it released the
+first version of the WS-I Basic Profile, declaring that only literal XML messages should be used (R2706). With the wide
+acceptance of WS-I, some of the more recent web service toolkits do not provide any support for (the previously
+ubiquitous) SOAP encoding at all.
+
+A Simple SOAP Example
+
+Putting it all together, below is an example of a simple request-response in SOAP for a stock quote.
+Here the transport binding is HTTP.
+
+The request:
+
+GET /StockPrice HTTP/1.1
+Host: example.org
+Content-Type: application/soap+xml; charset=utf-8
+Content-Length: nnn
+
+<?xml version="1.0"?>
+<env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope"
+   xmlns:s="http://www.example.org/stock-service">
+   <env:Body>
+     <s:GetStockQuote>
+          <s:TickerSymbol>IBM</s:TickerSymbol>
+     </s:GetStockQuote>
+   </env:Body>
+</env:Envelope>
+
+The response:
+
+HTTP/1.1 200 OK
+Content-Type: application/soap+xml; charset=utf-8
+Content-Length: nnn
+
+<?xml version="1.0"?>
+<env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope"
+   xmlns:s="http://www.example.org/stock-service">
+   <env:Body>
+     <s:GetStockQuoteResponse>
+          <s:StockPrice>45.25</s:StockPrice>
+     </s:GetStockQuoteResponse>
+   </env:Body>
+</env:Envelope>
+
+If you play your cards right, you may never have to actually see a SOAP message in action; every SOAP engine out there will do its best to hide it from you unless you really want to see it. If something goes wrong in your web service, however, it may be useful to know what one looks like for debugging purposes.
+
+REST
+
+Much in the way that Ruby on Rails was a reaction to more complex web application architectures, the emergence of the RESTful style of web services was a reaction to the more heavy-weight SOAP-based standards. In RESTful web services, the emphasis is on simple point-to-point communication over HTTP using plain old XML (POX).
+
+The origin of the term "REST" comes from the famous thesis from Roy Fielding describing the concept of Representative State Transfer (REST). REST is an architectural style that can be summed up as four verbs (GET, POST, PUT, and DELETE from HTTP 1.1) and the nouns, which are the resources available on the network (referenced in the URI). The verbs have the following operational equivalents:
+
+HTTP     CRUD Equivalent
+==============================
+GET      read
+POST     create,update,delete
+PUT      create,update
+DELETE   delete
+A service to get the details of a user called 'dsmith', for example, would be handled using an HTTP GET to http://example.org/users/dsmith. Deleting the user would use an HTTP DELETE, and creating a new one would mostly likely be done with a POST. The need to reference other resources would be handled using hyperlinks (the XML equivalent of HTTP's href, which is XLinks' xlink:href) and separate HTTP request-responses.
+
+A Simple RESTful Service
+
+Re-writing the stock quote service above as a RESTful web service provides a nice illustration of the differences between SOAP and REST web services.
+
+The request:
+
+GET /StockPrice/IBM HTTP/1.1
+Host: example.org
+Accept: text/xml
+Accept-Charset: utf-8
+The response:
+
+HTTP/1.1 200 OK
+Content-Type: text/xml; charset=utf-8
+Content-Length: nnn
+
+<?xml version="1.0"?>
+<s:Quote xmlns:s="http://example.org/stock-service">
+     <s:TickerSymbol>IBM</s:TickerSymbol>
+     <s:StockPrice>45.25</s:StockPrice>
+</s:Quote>
+
+Though slightly modified (to include the ticker symbol in the response), the RESTful version is still simpler and more
+concise than the RPC-style SOAP version. In a sense, as well, RESTful web services are much closer in design and
+philosophy to the Web itself.
+
+
+Defining the Contract
+
+Traditionally, the big drawback of REST vis-a-vis SOAP was the lack of any way of specifying a description/contract for
+the web service. This, however, has changed since WSDL 2.0 defines a full compliment of non-SOAP bindings (all the
+HTTP methods, not just GET and POST) and the emergence of WADL as an alternative to WSDL. This will be discussed in more
+detail in coming articles.
+
+
+Summary and Pros/Cons
+
+SOAP and RESTful web services have a very different philosophy from each other. SOAP is really a protocol for XML-based
+distributed computing, whereas REST adheres much more closely to a bare metal, web-based design. SOAP by itself is not
+that complex; it can get complex, however, when it is used with its numerous extensions (guilt by association).
+
+
+To summarize their strengths and weaknesses:
+
+*** SOAP ***
+
+Pros:
+-Langauge, platform, and transport agnostic
+-Designed to handle distributed computing environments
+-Is the prevailing standard for web services, and hence has better support from other standards (WSDL, WS-*) and tooling from vendors
+-Built-in error handling (faults)
+-Extensibility
+
+Cons:
+-Conceptually more difficult, more "heavy-weight" than REST
+-More verbose
+-Harder to develop, requires tools
+
+
+*** REST ***
+
+Pros:
+-Language and platform agnostic
+-Much simpler to develop than SOAP
+-Small learning curve, less reliance on tools
+-Concise, no need for additional messaging layer
+-Closer in design and philosophy to the Web, extended use of HTTP standards
+
+Cons:
+-Assumes a point-to-point communication model--not usable for distributed computing environment where message may go through one or more intermediaries
+-Lack of standards support for security, policy, reliable messaging, etc., so services that have more sophisticated requirements are harder to develop ("roll your own")
+-Tied to the HTTP transport model
+
+
+
+
+

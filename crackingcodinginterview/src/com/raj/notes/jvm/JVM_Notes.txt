@@ -1,0 +1,14 @@
+--- TOPIC 1 ---
+# How do JVM's communicate?
+- RMI is one - in fact it seems to be the preferred method in J2EE and other systems where the JVM have to be closely
+coupled. RMI uses sockets to communicate but hides the details. You could always use sockets directly.
+- If you need to have a loosely coupled communication, use JMS (provided the two JVMs host a JMS Service). An implementation
+for JMS is Apache ActiveMQ.
+- For language-indedependent purposes there's also CORBA.
+- RMI : Briefly, to use RMI you prepare a remote stub and a local skeleton. The calling app will bind to the stub, the
+called class with build on the skeleton. The process of preparing everything is done with the RMI compiler (RMIC).
+Once everything is assembled, the server registers itself with a naming service - which is port-based (generally port
+1099) so that the client can find it. The actual process of calling a remote procedure consists of calling the stub,
+which causes the rmi port to be opened and the calling parameters to be serialized through the rmi channel. On the
+server side, the skeleton links to the actual method code, which does its work and returns its result (if any) to be
+serialized and sent back to the caller - again using a socket port.
