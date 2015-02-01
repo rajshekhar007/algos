@@ -5,6 +5,8 @@ import com.raj.helper.FileReaderHelper;
 import java.util.List;
 
 /**
+ * Count Inversion - uses enhanced MergeSort routine
+ *
  * Created by Sweta on 1/24/2015.
  */
 public class CountInversions {
