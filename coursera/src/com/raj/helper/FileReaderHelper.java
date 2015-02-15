@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Shekhar Raj
+ */
+
 package com.raj.helper;
 
 import java.io.*;
@@ -37,5 +41,34 @@ public class FileReaderHelper {
         }
         return convertToInteger ? integerList : stringList;
     }
+
+    public static List readAsIntegerListOfArrays(String fileName, int arraySize) {
+
+        File file = new File(fileName);
+        List integerList = new ArrayList();
+
+        try {
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                line.trim();
+                String[] strArr = line.split(" ");
+                int[] intArr = new int[arraySize];
+                for (int i = 0; i < arraySize; i++) {
+                    intArr[i] = Integer.parseInt(strArr[i]);
+                }
+                integerList.add(intArr);
+            }
+            bufferedReader.close();
+            fileReader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return integerList;
+    }
+
 
 }

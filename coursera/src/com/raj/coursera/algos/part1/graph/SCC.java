@@ -4,13 +4,13 @@
 
 package com.raj.coursera.algos.part1.graph;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.raj.helper.FileReaderHelper;
 
-import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Sweta on 2/14/2015.
@@ -31,16 +31,18 @@ public class SCC {
         System.out.println("");
     }
 
-    public static void runProgram() {
+    public static void runProgram() throws InterruptedException {
 
-        List<String> inputList = FileReaderHelper.read("E:\\workspace-intellij\\algos\\coursera\\resource\\SCC.txt", false);
-        Integer[][] inputArray = new Integer[inputList.size()][2];
+        List integerListOfArrays = FileReaderHelper.readAsIntegerListOfArrays("E:\\workspace-intellij\\algos\\coursera\\resource\\SCC.txt", 2);
+
+        printSystemStats("After reading file");
+
+        int arraySize = integerListOfArrays.size();
+        int[][] inputArray = new int[arraySize][2];
 
         int i = 0;
-        for (String str : inputList) {
-            List<String> items = Arrays.asList(str.split(" "));
-            inputArray[i][0] = Integer.parseInt(items.get(0));
-            inputArray[i][1] = Integer.parseInt(items.get(1));
+        for (Object intArr : integerListOfArrays) {
+            inputArray[i] = (int[]) intArr;
             i++;
         }
 
@@ -49,8 +51,41 @@ public class SCC {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        printSystemStats("Start program");
         runProgram();
         Thread.sleep(2000);
+    }
+
+    public static void printSystemStats(String desc) {
+
+        int mb = 1024 * 1024;
+
+        //Getting the runtime reference from system
+        Runtime runtime = Runtime.getRuntime();
+
+        System.out.println("##### Heap utilization statistics [MB] at " + desc + " #####");
+
+        //Print used memory
+        System.out.println("Used Memory:"
+                + (runtime.totalMemory() - runtime.freeMemory()) / mb);
+
+        //Print free memory
+        System.out.println("Free Memory:"
+                + runtime.freeMemory() / mb);
+
+        //Print total available memory
+        System.out.println("Total Memory:" + runtime.totalMemory() / mb);
+
+        //Print Maximum available memory
+        System.out.println("Max Memory:" + runtime.maxMemory() / mb);
+
+        System.gc();
+        System.gc();
+        System.gc();
+        System.gc();
+        System.gc();
+        System.gc();
+        System.gc();
     }
 
     public void clearVisitedFlags() {
@@ -72,6 +107,8 @@ public class SCC {
             DFS(i);
         }
 
+        printSystemStats("After PASS 1");
+
         // reset graph to it's original state
         isGraphReversed = false;
         clearVisitedFlags();
@@ -85,6 +122,8 @@ public class SCC {
             start = nodeIdxToRefer;
             DFS(nodeIdxToRefer);
         }
+
+        printSystemStats("After PASS 2");
 
     }
 
@@ -134,11 +173,18 @@ public class SCC {
      *
      * @param A
      */
-    public void createGraph(Integer[][] A) {
+    public void createGraph(int[][] A) throws InterruptedException {
 
-        this.graph = Lists.newArrayList();
+        printSystemStats("Before creating graph");
 
-        for (int i = 0; i <= A[A.length - 1][0]; i++) {
+        Thread.sleep(2000);
+
+        int listSize = A[A.length - 1][0];
+        this.graph = Lists.newArrayListWithCapacity(listSize);
+
+        System.out.println("List Size: " + listSize);
+
+        for (int i = 0; i <= listSize; i++) {
             Node n = new Node(i);
             this.graph.add(n);
         }
@@ -150,18 +196,23 @@ public class SCC {
             this.graph.get(edge).incomingEdges.add(vertex);
         }
 
+        printSystemStats("After creating graph");
+
         this.computeSCC();
+
         //printGraph(this.graph);
-        System.out.println("SCC by leader : " + sccMapByLeader);
-        List sccList = new ArrayList(Lists.transform(Lists.newArrayList(sccMapByLeader.entrySet()), new Function<Map.Entry<Integer, List<Integer>>, Integer>() {
-            @Nullable
-            @Override
-            public Integer apply(@Nullable Map.Entry<Integer, List<Integer>> integerListEntry) {
-                return integerListEntry.getValue().size() + 1;
-            }
-        }));
+        //System.out.println("SCC by leader : " + sccMapByLeader);
+
+        List<Integer> sccList = Lists.newArrayList();
+        for (Map.Entry<Integer, List<Integer>> me : sccMapByLeader.entrySet()) {
+            sccList.add(me.getValue().size() + 1);
+        }
 
         Collections.sort(sccList);
+        Collections.reverse(sccList);
+
+        printSystemStats("After Sorting SCC list");
+
         System.out.println("Sorted SCC sizes : " + sccList);
 
     }
