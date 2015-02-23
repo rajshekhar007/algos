@@ -50,13 +50,22 @@ public class SCC {
         scc.createGraph(inputArray);
     }
 
-    public static void main(String[] args) throws InterruptedException {
-        printSystemStats("Start program");
-        runProgram();
-        Thread.sleep(2000);
-    }
-
     public static void printSystemStats(String desc) {
+
+        System.gc();
+        System.gc();
+        System.gc();
+        System.gc();
+        System.gc();
+        System.gc();
+        System.gc();
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
 
         int mb = 1024 * 1024;
 
@@ -86,6 +95,12 @@ public class SCC {
         System.gc();
         System.gc();
         System.gc();
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        printSystemStats("Start program");
+        runProgram();
+        Thread.sleep(2000);
     }
 
     public void clearVisitedFlags() {
@@ -247,6 +262,5 @@ public class SCC {
             return str;
         }
     }
-
 
 }
