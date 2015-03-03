@@ -42,6 +42,29 @@ public class FileReaderHelper {
         return convertToInteger ? integerList : stringList;
     }
 
+    public static List<Long> readAsLong(String fileName) {
+
+        File file = new File(fileName);
+        List<Long> longList = new ArrayList<Long>();
+
+        try {
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                line.trim();
+                longList.add(Long.parseLong(line));
+            }
+            bufferedReader.close();
+            fileReader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return longList;
+    }
+
     public static List readAsIntegerListOfArrays(String fileName, int arraySize) {
 
         File file = new File(fileName);
