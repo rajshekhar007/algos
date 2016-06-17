@@ -5,6 +5,7 @@ package com.raj.strings;
  */
 public class LongestPalindromeSubstring {
 
+    // Refer to DP solution
     public String longestPalindrome(String s) {
         if (s == null || s.isEmpty() || s.length() == 1) return s;
         String longestP = "";
@@ -28,6 +29,6 @@ public class LongestPalindromeSubstring {
         LongestPalindromeSubstring l = new LongestPalindromeSubstring();
         System.out.println(l.longestPalindrome("abb"));
         System.out.println(l.longestPalindrome("cababa"));
-        System.out.println(l.longestPalindrome("abacdfgdcaba"));
+        System.out.println(l.longestPalindrome("abacdfgdcaba"));  // see DP solution
     }
 }
