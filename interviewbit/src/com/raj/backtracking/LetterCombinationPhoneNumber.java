@@ -11,6 +11,13 @@ import java.util.List;
  */
 public class LetterCombinationPhoneNumber {
 
+    /**
+     *              " ", 234
+     *           /     |    \
+     *         a,34   b,34   c,34    (decompose 2 and permute on each letter of 2)
+     *         / | \
+     *      ad,4 ae,4 af,4           (decompose 3 and permute on each letter of 3)
+     */
     private HashMap<Integer, String> map = new HashMap<>();
     private List<String> result = Lists.newArrayList();
 
@@ -35,15 +42,15 @@ public class LetterCombinationPhoneNumber {
     }
 
     public void permuteLetterCombinations(String soFar, String rest) {
-        if(rest.isEmpty()) {
+        if(rest.isEmpty()) {       // Base case - when no digits are left to permute
             result.add(soFar);
             return;
         }
 
-        Integer curr = Integer.valueOf(rest.substring(0,1));
-        String letters = map.get(curr);
-        for(int i=0; i<letters.length(); i++) {
-            permuteLetterCombinations(soFar + letters.charAt(i), rest.substring(1));
+        Integer curr = Integer.valueOf(rest.substring(0,1));   // take the first digit
+        String letters = map.get(curr);      // decompose digit into letters
+        for(int i=0; i<letters.length(); i++) {        // iterate on each letter
+            permuteLetterCombinations(soFar + letters.charAt(i), rest.substring(1));  // keep appending letter to soFar and permute on leftover digits
         }
     }
 
