@@ -1,4 +1,4 @@
-package com.raj.util;
+package com.raj;
 
 import java.util.HashMap;
 import java.util.Map;

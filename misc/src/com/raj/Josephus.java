@@ -1,8 +1,8 @@
-import com.raj.linkedlist;
+package com.raj;
 
 class Josephus {
 
-    class LL {
+    static class LL {
         public int size;
         public Node start, current;
 
@@ -40,7 +40,7 @@ class Josephus {
         }*/
     }
 
-    class Node {
+    static class Node {
         public int data;
         public Node next;
 

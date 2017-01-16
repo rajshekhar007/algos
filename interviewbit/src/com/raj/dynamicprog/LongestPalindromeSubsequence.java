@@ -23,15 +23,20 @@ public class LongestPalindromeSubsequence {
         // 1 char substring are P
         for (int i = 0; i < s.length(); i++) {
             table[i][i] = true;
-            PStart = i; PEnd = i;
+            if (i-i > PEnd-PStart) {  // update maxP's indexes
+                PStart = i;
+                PEnd = i;
+            }
         }
 
         // check for 2 char P
         for (int i = 0; i < s.length(); i++) {
             if (i+1 < s.length() && s.charAt(i)==s.charAt(i+1)) {
                 table[i][i + 1] = true;
-                PStart = i;
-                PEnd = i+1;
+                if ((i+1)-i > PEnd-PStart) {  // update maxP's indexes
+                    PStart = i;
+                    PEnd = i+1;
+                }
             }
         }
 

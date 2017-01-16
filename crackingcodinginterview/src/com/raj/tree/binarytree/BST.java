@@ -169,7 +169,7 @@ public class BST {
     /**
      * Print all possible paths from root to leafs
      * Algo :
-     * - While traversing tree, we need to keep track of nodes traversed.
+     * - While traversing tree, we need to keep track of nodes traversed. Use either a LL or array simply
      * - if(n==null) return
      * - arrVisitedNodes[depth + 1] = n.data;
      * - {print all arr till depth; return;}
