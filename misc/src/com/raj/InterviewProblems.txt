@@ -1,0 +1,16 @@
+1> Group or Sort(similar) anagrams -> abc, mat, cab, ban, tam, bac, nab => {abc,cab,bac}, {mat,tam}, {nab,ban}
+
+2> Find longest common prefix, given a list of strings -> abcde, abcmn, abkl, abz => {ab}
+
+3> Given 2 nodes in a binary tree with pointers to parent node, find Least Common Ancestor
+
+4> Permute abc -> abc, acb, bac, bca, cab, cba
+
+5> Permute 123 to ascii chars -> abc, lc, aw
+
+6> Needle in Haystack -> abcdefgh lmnopqr => def
+
+7> Merge overlapping intervals. Given [1,2],[3,5],[6,7],[8,10],[12,16], insert and merge [4,9] would result in [1,2],[3,10],[12,16].
+This is because the new interval [4,9] overlaps with [3,5],[6,7],[8,10]. Make sure the returned intervals are also sorted.
+
+8>
