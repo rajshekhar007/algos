@@ -26,4 +26,13 @@ This is because the new interval [4,9] overlaps with [3,5],[6,7],[8,10]. Make su
      / \
     4   5
 
-12>
+12> Design LRU cache.
+
+13>
+How would he scale an API or span an application onto multiple machines and what problems would they cause?
+How would he store Strings for faster retrieval if they are being used in a type-ahead field?
+A coding question.
+REST API method selection and usage with emphasis on idempotency.
+HashMap & Immutability.
+Some behavioral questions like why is he looking for new positions and what interested him in Walmart?
+Git process and some other CI/CD stuff.
