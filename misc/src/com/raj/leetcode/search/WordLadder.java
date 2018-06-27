@@ -22,7 +22,7 @@ import java.util.*;
  */
 public class WordLadder {
 
-    int comparisons = 0;
+    static int comparisons = 0;
 
     class Node {
         String word;
@@ -59,6 +59,41 @@ public class WordLadder {
         String end = input.split(",")[1];
         return bfs(start, end);
     }
+
+    public int run1(String input) {
+        String start = input.split(",")[0];
+        String end = input.split(",")[1];
+        if (start == null || start.length() == 0 || end == null || end.length() == 0) return -1;
+        transformations.add(start);
+        return recurse(start, end, -1);
+    }
+
+    Set<String> isAlreadyTried = Sets.newHashSet();
+    private static List<String> transformations = Lists.newArrayList();
+
+    public int recurse(String soFar, String end, int indexChanged) {
+        // Base case
+        if (soFar.equals(end)) return 0; // match found
+
+        // Recursive case : flip one letter anywhere and see it matches dict word = a ladder to next level
+        for (int i = 0; i < soFar.length(); i++) {  // start iterating on each letter from left
+            char[] soFarArr = soFar.toCharArray();
+            for (char j = 'a'; j < 'z'; j++) {
+                soFarArr[i] = j;  // try a combination
+                String newWord = String.valueOf(soFarArr);
+                // make sure the new combination isn't happening at the same index as it doesn't count as a transformation really (you could have gotten it in next few iterations)
+                if (!isAlreadyTried.contains(newWord) && isValidWord(newWord) && indexChanged != i) {
+                    isAlreadyTried.add(newWord);
+                    transformations.add(newWord);
+                    return 1 + recurse(newWord, end, i);  // valid word = +1 length
+                }
+            }
+        }
+
+        // Base case
+        return -1;
+    }
+
 
     /**
      * BFS will return the shortest transformation by design
@@ -100,6 +135,10 @@ public class WordLadder {
     public static void main(String[] args) {
         WordLadder wordLadder = new WordLadder();
         getInput().forEach(input -> System.out.println(wordLadder.run(input)));
+        System.out.println("Comparisons = " + comparisons);
+        comparisons = 0;
+        getInput().forEach(input -> System.out.println(wordLadder.run1(input)));
+        System.out.println(transformations + ", Comparisons = " + comparisons);
     }
 
     public static List<String> getInput() {

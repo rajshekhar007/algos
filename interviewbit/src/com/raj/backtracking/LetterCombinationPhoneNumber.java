@@ -2,7 +2,6 @@ package com.raj.backtracking;
 
 import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,6 +16,10 @@ public class LetterCombinationPhoneNumber {
      *         a,34   b,34   c,34    (decompose 2 and permute on each letter of 2)
      *         / | \
      *      ad,4 ae,4 af,4           (decompose 3 and permute on each letter of 3)
+     *       /
+     *  (adg,adh,adi)
+     *
+     *
      */
     private HashMap<Integer, String> map = new HashMap<>();
     private List<String> result = Lists.newArrayList();

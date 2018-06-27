@@ -113,7 +113,7 @@ public class WordBreak {
                 List<String> subProblemResultRecursive = dpRecursive(subProblem.substring(i+1)); // f(sanddog)
 
                 // Subproblem Result = cat + f(sanddog)
-                for (String subProblemResultRecursiveLineItem : subProblemResultRecursive) {   // may have mutiple string combinations
+                for (String subProblemResultRecursiveLineItem : subProblemResultRecursive) {   // may have multiple string combinations
                     subProblemResult.add(current + " " + subProblemResultRecursiveLineItem);
                 }
             }
