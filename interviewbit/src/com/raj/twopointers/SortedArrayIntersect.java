@@ -23,7 +23,7 @@ public class SortedArrayIntersect {
 
      Input :
      A : [1 2 3 3 4 5 6]
-     B : [3 5]
+     B : [3 5 7]
 
      Output : [3 5]
      */

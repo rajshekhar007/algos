@@ -1,23 +1,13 @@
 package com.raj.linkedlist;
 
+import com.raj.linkedlist.base.ListNode;
+
 /**
  * Created by rshekh1 on 6/16/16.
  */
 public class LLIntersection {
 
-    static class ListNode {
-        public int val;
-        public ListNode next;
-        ListNode(int x) { val = x; next = null; }
 
-        @Override
-        public String toString() {
-            return com.google.common.base.Objects.toStringHelper("N")
-                    .add("val", val)
-                    .add("->", next)
-                    .toString();
-        }
-    }
 
     public ListNode getIntersectionNode(ListNode a, ListNode b) {
 
