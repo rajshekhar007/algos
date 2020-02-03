@@ -36,3 +36,7 @@ REST API method selection and usage with emphasis on idempotency.
 HashMap & Immutability.
 Some behavioral questions like why is he looking for new positions and what interested him in Walmart?
 Git process and some other CI/CD stuff.
+
+14> DP - Min cost of cutting a rod. Knapsack problem.
+
+15>
